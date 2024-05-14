@@ -4,7 +4,7 @@ export const products = [
         name: 'Bacon-Cheese Takoyaki',
         description: 'Delicious Japanese street food made with Bacon-Cheese.',
         price: 5.99,
-        image: 'bacon-cheese.jpg',
+        image: './images/bacon-cheese.jpg',
     },
     {
         id: 2,

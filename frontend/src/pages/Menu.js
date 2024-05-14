@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { products } from '../data/products';
 import { CartContext } from '../context/CartContext';
-
+import baconCheeseImage from '../data/images/bacon-cheese.jpg';
 
 
 // Styled Components
@@ -83,17 +83,20 @@ const Menu = () => {
 
   return (
     <MenuContainer>
-      <div className="container">
+      <div className="container"> 
         <ProductGrid>
           {products.map(product => (
             <ProductCard key={product.id}>
-              <ProductImage src={product.image} alt={product.name} />
+              {/* Corrected Image Path */}
+              <ProductImage src={baconCheeseImage} alt={product.name} />
+
               <CardBody>
                 <ProductTitle>{product.name}</ProductTitle>
                 <p className="card-text">{product.description}</p>
               </CardBody>
+
               <CardFooter>
-                <ProductPrice>${product.price}</ProductPrice>
+                <ProductPrice>${product.price.toFixed(2)}</ProductPrice> {/* Format Price */}
                 <AddToCartButton onClick={() => handleAddToCart(product)}>
                   Add to Cart
                 </AddToCartButton>

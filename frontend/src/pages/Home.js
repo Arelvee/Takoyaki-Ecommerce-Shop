@@ -75,14 +75,14 @@ const Home = () => {
           <JumbotronSubtitle>Get ready to experience the best takoyaki in town!</JumbotronSubtitle>
         </div>
       </Jumbotron>
-      
+
       <SectionContainer>
         <div className="container">
           <SectionTitle>Latest News</SectionTitle>
           {/* Add latest news content here */}
         </div>
       </SectionContainer>
-      
+
       <SectionContainer>
         <div className="container">
           <SectionTitle>CEO Messages</SectionTitle>
