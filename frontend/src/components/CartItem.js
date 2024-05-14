@@ -23,9 +23,9 @@ const ImageContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+  width: 100%; /* Set a fixed width for the image */
+  height: 100%; /* Maintain the aspect ratio */
+  object-fit: cover; /* Ensure the image covers the container */
 `;
 
 const CardBody = styled.div`
@@ -55,11 +55,12 @@ const ButtonGroup = styled.div`
 const Button = styled.button`
   background-color: #ddd;
   border: none;
-  padding: 10px;
-  margin: 0 5px;
+  padding: 0.5em 2%; /* Adjust padding using percentage-based units */
+  margin: 0 1%; /* Adjust margin using percentage-based units */
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 1rem; /* Set font size using relative units */
 
   &:hover {
     background-color: #ccc;
@@ -69,7 +70,7 @@ const Button = styled.button`
 const RemoveButton = styled(Button)`
   background-color: #f44336;
   color: white;
-  margin-left: auto;
+  margin-left: auto; /* Align the remove button to the right */
 
   &:hover {
     background-color: #e53935;

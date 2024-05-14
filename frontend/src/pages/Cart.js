@@ -1,9 +1,8 @@
-// components/Cart.js
-
 import React, { useContext } from 'react';
 import CartItem from '../components/CartItem';
 import styled from 'styled-components';
 import { CartContext } from '../context/CartContext';
+import { products } from '../data/products'; // Import your product data
 
 const CartContainer = styled.div`
   padding: 40px 0;
@@ -66,15 +65,20 @@ const Cart = () => {
         ) : (
           <>
             <CartItemsContainer>
-              {cartItems.map(item => (
-                <CartItem
-                  key={item.id}
-                  item={item}
-                  onIncreaseQuantity={() => addToCart(item)}
-                  onDecreaseQuantity={() => decreaseQuantity(item.id)}
-                  onRemoveItem={() => removeFromCart(item.id)}
-                />
-              ))}
+              {cartItems.map(cartItem => {
+                // Find the corresponding product from the products array
+                const product = products.find(product => product.id === cartItem.id);
+                return (
+                  <CartItem
+                    key={cartItem.id}
+                    item={cartItem}
+                    image={product.image} // Pass the image source to CartItem
+                    onIncreaseQuantity={() => addToCart(cartItem)}
+                    onDecreaseQuantity={() => decreaseQuantity(cartItem.id)}
+                    onRemoveItem={() => removeFromCart(cartItem.id)}
+                  />
+                );
+              })}
             </CartItemsContainer>
             <TotalContainer>
               Total: ₱{calculateTotalBill()} {/* Change currency symbol here */}

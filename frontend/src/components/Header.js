@@ -1,164 +1,139 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Logo from "../components/logo.jpg"; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faHome, faUtensils, faShoppingCart, 
-  faCreditCard, faEnvelope, faPhone, faBars 
-} from '@fortawesome/free-solid-svg-icons';
-
+import Logo from "../components/logo.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faUtensils,
+  faShoppingCart,
+  faCreditCard,
+  faEnvelope,
+  faPhone,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
 
 const NavContainer = styled.nav`
-  background: linear-gradient(135deg, #E1EFEE, #F3F0E8); /* Subtle gradient background */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
-  padding: 20px 30px; /* Adjust padding */
+  background: linear-gradient(135deg, #e1efee, #f3f0e8);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px 30px;
   display: flex;
   justify-content: space-between;
-  align-items: center; /* Ensure items are vertically centered */
+  align-items: center;
 
-  /* Responsive design */
   @media (max-width: 768px) {
     flex-direction: column;
-    padding: 10px 20px;
+    padding: 15px 20px; /* Adjusted padding */
   }
 `;
 
 const BrandLink = styled(Link)`
-  font-family: "Raleway", sans-serif; /* Elegant sans-serif font */
+  font-family: "Raleway", sans-serif;
   font-size: 28px;
   color: #222;
   text-decoration: none;
-  font-weight: 400; /* Bold font weight */
+  font-weight: 400;
   display: flex;
-  align-items: center; /* Align items vertically */
+  align-items: center;
 `;
 
 const LogoImage = styled.img`
-  width: 80px; /* Set width of the logo */
+  width: 80px;
   margin-right: 10px;
-  margin-left: 20px; /* Add spacing between logo and brand link */
-  border-radius: 50%
+  border-radius: 50%;
 `;
 
 const NavLinksContainer = styled.div`
   display: flex;
   align-items: center;
 
-  @media (max-width: 768px) { 
-    flex-direction: column;   
-    position: absolute;
-    top: 100%;              
-    left: 0;
-    background-color: white;
-    width: 100%;
-    padding: 20px;
-    transform: translateY(-100%); 
-    transition: transform 0.3s ease-in-out; 
-
-    &.active {
-      transform: translateY(0); 
-    }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin-top: 20px; /* Adjusted margin */
+    display: ${({ isOpen }) => (isOpen ? "flex" : "none")}; /* Toggle display based on isOpen */
   }
 `;
 
 const NavLink = styled(Link)`
   color: #222;
-  margin: 0 15px; 
+  margin: 0 15px;
   text-decoration: none;
-  font-weight: 500; 
-  font-size: 20px;  
+  font-weight: 500;
+  font-size: 20px;
   transition: color 0.2s;
-  display: flex;             
-  align-items: center;      
+  display: flex;
+  align-items: center;
 
   &:hover {
     color: #ff6600;
   }
 
   @media (max-width: 768px) {
-    display: block;         
-    margin: 10px 0;         
+    display: block;
+    margin: 10px 0;
   }
 `;
 
-const NavLinkText = styled.span`  
-  margin-left: 5px;         
+const NavLinkText = styled.span`
+  margin-left: 5px;
 `;
 
 const HamburgerIcon = styled.button`
-  display: none; 
+  display: none;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
-  margin-right: 20px; 
+  margin-right: 20px;
 
   @media (max-width: 768px) {
     display: block;
   }
 `;
 
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [menuRef]);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prevState) => !prevState); // Toggle the previous state of isMenuOpen
   };
 
   return (
-    <header>
-      <NavContainer>
-        <BrandLink to="/">
-          <LogoImage src={Logo} alt="Logo" />
-          Takoyamie-Hauz
-        </BrandLink>
-        <HamburgerIcon onClick={toggleMenu}>
-          <FontAwesomeIcon icon={faBars} size="lg" />
-        </HamburgerIcon>
-        <NavLinksContainer ref={menuRef} className={isMenuOpen ? "active" : ""}>
-          <NavLink to="/">
-            <FontAwesomeIcon icon={faHome} />
-            <NavLinkText>Home</NavLinkText>
-          </NavLink>
-          <NavLink to="/menu">
-            <FontAwesomeIcon icon={faUtensils} />
-            <NavLinkText>Menu</NavLinkText>
-          </NavLink>
-          <NavLink to="/cart">
-            <FontAwesomeIcon icon={faShoppingCart} />
-            <NavLinkText>Cart</NavLinkText>
-          </NavLink>
-          <NavLink to="/payment">
-            <FontAwesomeIcon icon={faCreditCard} />
-            <NavLinkText>Payment</NavLinkText>
-          </NavLink>
-          <NavLink to="/contact">
-            <FontAwesomeIcon icon={faEnvelope} />
-            <NavLinkText>Contact</NavLinkText>
-          </NavLink>
-          <NavLink to="/call"> 
-            <FontAwesomeIcon icon={faPhone} />
-            <NavLinkText>Call</NavLinkText>
-          </NavLink> 
-        </NavLinksContainer>
-      </NavContainer>
-    </header>
+    <NavContainer>
+      <BrandLink to="/">
+        <LogoImage src={Logo} alt="Logo" />
+        Takoyamie-Hauz
+      </BrandLink>
+      <HamburgerIcon onClick={toggleMenu}>
+        <FontAwesomeIcon icon={faBars} size="lg" />
+      </HamburgerIcon>
+      <NavLinksContainer isOpen={isMenuOpen}> {/* Pass isOpen prop to toggle visibility */}
+        <NavLink to="/">
+          <FontAwesomeIcon icon={faHome} />
+          <NavLinkText>Home</NavLinkText>
+        </NavLink>
+        <NavLink to="/menu">
+          <FontAwesomeIcon icon={faUtensils} />
+          <NavLinkText>Menu</NavLinkText>
+        </NavLink>
+        <NavLink to="/cart">
+          <FontAwesomeIcon icon={faShoppingCart} />
+          <NavLinkText>Cart</NavLinkText>
+        </NavLink>
+        <NavLink to="/payment">
+          <FontAwesomeIcon icon={faCreditCard} />
+          <NavLinkText>Payment</NavLinkText>
+        </NavLink>
+        <NavLink to="/contact">
+          <FontAwesomeIcon icon={faEnvelope} />
+          <NavLinkText>Contact</NavLinkText>
+        </NavLink>
+        <NavLink to="/call">
+          <FontAwesomeIcon icon={faPhone} />
+          <NavLinkText>Call</NavLinkText>
+        </NavLink>
+      </NavLinksContainer>
+    </NavContainer>
   );
 };
 
