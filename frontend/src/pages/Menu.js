@@ -1,14 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { products } from '../data/products';
 import { CartContext } from '../context/CartContext';
 import baconCheeseImage from '../data/images/bacon-cheese.jpg';
-
+import backgroundImage from '../data/images/menubg.png'; // Import the background image
 
 // Styled Components
 const MenuContainer = styled.div`
-  padding: 40px 0; 
-  background-color: #f8f8f8;
+  padding: 40px 0;
+  background-image: url(${backgroundImage}); /* Background image */
+  background-size: cover; /* Cover the entire section */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
   text-align: center; // Optional
 `;
 
@@ -66,8 +69,21 @@ const AddToCartButton = styled.button`
   }
 `;
 
+const Notification = styled.div`
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 999;
+`;
+
 const Menu = () => {
   const { addToCart } = useContext(CartContext);
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleAddToCart = (product) => {
     const itemToAdd = {
@@ -78,12 +94,14 @@ const Menu = () => {
       // Add any other necessary details here
     };
     addToCart(itemToAdd); // Pass the item details to the addToCart function
+    setShowNotification(true); // Show the notification
+    setTimeout(() => setShowNotification(false), 2000); // Hide the notification after 2 seconds
   };
-
 
   return (
     <MenuContainer>
-      <div className="container"> 
+      <div className="container">
+        {showNotification && <Notification>Item added to cart</Notification>}
         <ProductGrid>
           {products.map(product => (
             <ProductCard key={product.id}>
@@ -96,7 +114,7 @@ const Menu = () => {
               </CardBody>
 
               <CardFooter>
-                <ProductPrice>${product.price.toFixed(2)}</ProductPrice> {/* Format Price */}
+                <ProductPrice>₱{product.price.toFixed(2)}</ProductPrice> {/* Format Price */}
                 <AddToCartButton onClick={() => handleAddToCart(product)}>
                   Add to Cart
                 </AddToCartButton>

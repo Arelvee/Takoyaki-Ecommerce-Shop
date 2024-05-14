@@ -1,27 +1,101 @@
-import React from 'react';
+// components/CartItem.js
 
-const CartItem = ({ item, onIncreaseQuantity, onDecreaseQuantity, onRemoveItem  }) => {
-    return (
-        <div className="card mb-3">
-            <div className="row no-gutters">
-                <div className="col-md-4">
-                    <img src={item.image} className="card-img" alt={item.name} />
-                </div>
-                <div className="col-md-8">
-                    <div className="card-body">
-                        <h5 className="card-title">{item.name}</h5>
-                        <p className="card-text">Quantity: {item.quantity}</p>
-                        <p className="card-text">Price: ${item.price}</p>
-                        <div className="btn-group" role="group" aria-label="Quantity controls">
-                            <button type="button" className="btn btn-secondary" onClick={() => onDecreaseQuantity(item)}> - </button>
-                            <button type="button" className="btn btn-secondary" onClick={() => onIncreaseQuantity(item)}> + </button>
-                            <button type="button" className="btn btn-danger" onClick={() => onRemoveItem(item)}> Remove </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+import React from 'react';
+import styled from 'styled-components';
+
+const Card = styled.div`
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
+`;
+
+const ImageContainer = styled.div`
+  flex: 0 0 150px;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+`;
+
+const CardBody = styled.div`
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const Title = styled.h5`
+  font-size: 1.2rem;
+  margin: 0 0 10px;
+  color: #333;
+`;
+
+const Text = styled.p`
+  margin: 0 0 10px;
+  color: #666;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Button = styled.button`
+  background-color: #ddd;
+  border: none;
+  padding: 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #ccc;
+  }
+`;
+
+const RemoveButton = styled(Button)`
+  background-color: #f44336;
+  color: white;
+  margin-left: auto;
+
+  &:hover {
+    background-color: #e53935;
+  }
+`;
+
+const CartItem = ({ item, onIncreaseQuantity, onDecreaseQuantity, onRemoveItem }) => {
+  return (
+    <Card>
+      <ImageContainer>
+        <Image src={item.image} alt={item.name} />
+      </ImageContainer>
+      <CardBody>
+        <div>
+          <Title>{item.name}</Title>
+          <Text>Quantity: {item.quantity}</Text>
+          <Text>Price: ₱{item.price.toFixed(2)}</Text> {/* Change currency symbol here */}
         </div>
-    );
-}
+        <ButtonGroup>
+          <Button onClick={onDecreaseQuantity}> - </Button>
+          <Button onClick={onIncreaseQuantity}> + </Button>
+          <RemoveButton onClick={onRemoveItem}> Remove </RemoveButton>
+        </ButtonGroup>
+      </CardBody>
+    </Card>
+  );
+};
 
 export default CartItem;

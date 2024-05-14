@@ -2,10 +2,18 @@ import React from 'react';
 import styled from 'styled-components'; 
 
 const FooterContainer = styled.footer`
-  background-color: #f0f0f0;
-  padding: 20px 0;
-  text-align: center;
-  font-family: 'Montserrat', sans-serif; 
+background: linear-gradient(135deg, #E1EFEE, #F3F0E8); /* Subtle gradient background */
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+padding: 20px 30px; /* Adjust padding */
+display: flex;
+justify-content: space-between;
+align-items: center; /* Ensure items are vertically centered */
+
+/* Responsive design */
+@media (max-width: 768px) {
+  flex-direction: column;
+  padding: 10px 20px;
+}
 `;
 
 const CopyrightText = styled.span`

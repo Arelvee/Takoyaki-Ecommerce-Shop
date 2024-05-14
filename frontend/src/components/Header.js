@@ -8,11 +8,20 @@ import {
   faCreditCard, faEnvelope, faPhone, faBars 
 } from '@fortawesome/free-solid-svg-icons';
 
+
 const NavContainer = styled.nav`
-  background-color: transparent; /* Transparent background */
-  padding: 20px 0;
+  background: linear-gradient(135deg, #E1EFEE, #F3F0E8); /* Subtle gradient background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  padding: 20px 30px; /* Adjust padding */
   display: flex;
-  justify-content: space-between; /* Align items to the ends */
+  justify-content: space-between;
+  align-items: center; /* Ensure items are vertically centered */
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 10px 20px;
+  }
 `;
 
 const BrandLink = styled(Link)`
@@ -29,6 +38,7 @@ const LogoImage = styled.img`
   width: 80px; /* Set width of the logo */
   margin-right: 10px;
   margin-left: 20px; /* Add spacing between logo and brand link */
+  border-radius: 50%
 `;
 
 const NavLinksContainer = styled.div`
