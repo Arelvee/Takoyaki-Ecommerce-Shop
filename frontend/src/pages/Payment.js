@@ -2,12 +2,18 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
+import backgroundImage from '../data/images/menubg.png'; // Import the background image
 
 const PaymentContainer = styled.div`
   padding: 40px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  background-image: url(${backgroundImage}); /* Background image */
+  background-size: cover; /* Cover the entire section */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  text-align: center; // Optional
 `;
 
 const PaymentOptionsContainer = styled.div`
@@ -87,6 +93,8 @@ const Payment = () => {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCVV] = useState('');
   const [name, setName] = useState('');
+  const [gcashNumber, setGcashNumber] = useState('');
+  const [mayaNumber, setMayaNumber] = useState('');
 
   const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -118,7 +126,7 @@ const Payment = () => {
     <PaymentContainer>
       <PaymentOptionsContainer>
         <PaymentOption onClick={() => handlePaymentSelection('credit_card')}>
-          <PaymentOptionIcon src="/icons/credit_card_icon.png" alt="Credit Card" />
+          <PaymentOptionIcon src="/icons/credit_card_icon.jpg" alt="Credit Card" />
           <PaymentOptionLabel>Credit/Debit Card</PaymentOptionLabel>
         </PaymentOption>
         <PaymentOption onClick={() => handlePaymentSelection('gcash')}>
@@ -130,10 +138,11 @@ const Payment = () => {
           <PaymentOptionLabel>Maya</PaymentOptionLabel>
         </PaymentOption>
         <PaymentOption onClick={() => handlePaymentSelection('cash_on_delivery')}>
-          <PaymentOptionIcon src="/icons/cod_icon.png" alt="Cash on Delivery" />
+          <PaymentOptionIcon src="/icons/cod_icon.jpg" alt="Cash on Delivery" />
           <PaymentOptionLabel>Cash on Delivery</PaymentOptionLabel>
         </PaymentOption>
       </PaymentOptionsContainer>
+
       {selectedPayment === 'credit_card' && (
         <PaymentFormContainer>
           <PaymentForm onSubmit={handleSubmit}>
@@ -157,7 +166,45 @@ const Payment = () => {
             <FormInput type="text" id="cvv" value={cvv} onChange={(e) => setCVV(e.target.value)} required />
             <FormLabel htmlFor="name">Name on Card</FormLabel>
             <FormInput type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
-            <TotalAmount>Total Amount: ${totalAmount.toFixed(2)}</TotalAmount>
+            <TotalAmount>Total Amount: ₱{totalAmount.toFixed(2)}</TotalAmount>
+            <FormButton type="submit" loading={loading} disabled={loading}>
+              {loading ? 'Processing...' : 'Pay Now'}
+            </FormButton>
+          </PaymentForm>
+        </PaymentFormContainer>
+      )}
+
+      {selectedPayment === 'gcash' && (
+        <PaymentFormContainer>
+          <PaymentForm onSubmit={handleSubmit}>
+            <FormLabel htmlFor="gcashNumber">GCash Number</FormLabel>
+            <FormInput
+              type="text"
+              id="gcashNumber"
+              value={gcashNumber}
+              onChange={(e) => setGcashNumber(e.target.value)}
+              required
+            />
+            <TotalAmount>Total Amount: ₱{totalAmount.toFixed(2)}</TotalAmount>
+            <FormButton type="submit" loading={loading} disabled={loading}>
+              {loading ? 'Processing...' : 'Pay Now'}
+            </FormButton>
+          </PaymentForm>
+        </PaymentFormContainer>
+      )}
+
+      {selectedPayment === 'maya' && (
+        <PaymentFormContainer>
+          <PaymentForm onSubmit={handleSubmit}>
+            <FormLabel htmlFor="mayaNumber">Maya Number</FormLabel>
+            <FormInput
+              type="text"
+              id="mayaNumber"
+              value={mayaNumber}
+              onChange={(e) => setMayaNumber(e.target.value)}
+              required
+            />
+            <TotalAmount>Total Amount: ₱{totalAmount.toFixed(2)}</TotalAmount>
             <FormButton type="submit" loading={loading} disabled={loading}>
               {loading ? 'Processing...' : 'Pay Now'}
             </FormButton>

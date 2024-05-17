@@ -1,11 +1,18 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import CartItem from '../components/CartItem';
 import styled from 'styled-components';
 import { CartContext } from '../context/CartContext';
 import { products } from '../data/products'; // Import your product data
+import backgroundImage from '../data/images/menubg.png'; // Import the background image
 
 const CartContainer = styled.div`
   padding: 40px 0;
+  background-image: url(${backgroundImage}); /* Background image */
+  background-size: cover; /* Cover the entire section */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  text-align: center; // Optional
 `;
 
 const CartHeading = styled.h2`
@@ -51,9 +58,14 @@ const ProceedButton = styled.button`
 
 const Cart = () => {
   const { cartItems, addToCart, decreaseQuantity, removeFromCart } = useContext(CartContext);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const calculateTotalBill = () => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+  };
+
+  const handleProceedToCheckout = () => {
+    navigate('/payment'); // Navigate to the payment route
   };
 
   return (
@@ -84,7 +96,7 @@ const Cart = () => {
               Total: ₱{calculateTotalBill()} {/* Change currency symbol here */}
             </TotalContainer>
             <div className="text-center">
-              <ProceedButton>Proceed to Checkout</ProceedButton>
+              <ProceedButton onClick={handleProceedToCheckout}>Proceed to Checkout</ProceedButton>
             </div>
           </>
         )}
