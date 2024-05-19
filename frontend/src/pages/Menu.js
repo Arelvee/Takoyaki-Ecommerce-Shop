@@ -1,31 +1,40 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { products } from '../data/products';
+import axios from 'axios';
 import { CartContext } from '../context/CartContext';
-import baconCheeseImage from '../data/images/bacon-cheese.jpg';
-import backgroundImage from '../data/images/menubg.png'; // Import the background image
+import backgroundImage from '../data/images/menubg.png';
 
 // Styled Components
 const MenuContainer = styled.div`
   padding: 40px 0;
-  background-image: url(${backgroundImage}); /* Background image */
-  background-size: cover; /* Cover the entire section */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  text-align: center; // Optional
+  background-image: url(${backgroundImage});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  text-align: center;
 `;
 
 // Grid Layout for Cards
 const ProductGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
+ 
 `;
 
 const ProductCard = styled.div`
-  /* ... (other styles remain the same) */
-  display: flex; /* Enable flexbox for vertical layout */
-  flex-direction: column; /* Stack content vertically */
+  display: flex;
+  flex-direction: column;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box-shadow */
+  border-radius: 10px; /* Add border-radius */
+  background-color: #ffffff; /* Add background-color */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition for hover effect */
+
+  &:hover {
+    transform: translateY(-5px); /* Add slight translateY on hover */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Enhance box-shadow on hover */
+  }
 `;
 
 const ProductImage = styled.img`
@@ -36,13 +45,13 @@ const ProductImage = styled.img`
 
 const CardBody = styled.div`
   padding: 20px;
-  flex-grow: 1; /* Allow CardBody to take up remaining space */
+  flex-grow: 1;
 `;
 
 const CardFooter = styled.div`
-  display: flex; /* Enable flexbox for horizontal layout */
-  justify-content: space-between; /* Align items with space between */
-  align-items: center; /* Vertically align items */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 20px;
 `;
 
@@ -57,7 +66,7 @@ const ProductPrice = styled.p`
 `;
 
 const AddToCartButton = styled.button`
-  background-color: #419001; /* Vibrant orange */
+  background-color: #013590;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -65,7 +74,7 @@ const AddToCartButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #ff5500; /* Slightly darker on hover */
+    background-color: #ff5500;
   }
 `;
 
@@ -83,30 +92,45 @@ const Notification = styled.div`
 
 const Menu = () => {
   const { addToCart } = useContext(CartContext);
+  const [products, setProducts] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/products');
+      console.log('Fetched products:', response.data); // Log the fetched products
+      setProducts(response.data.products); // Update state with the products array
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   const handleAddToCart = (product) => {
     const itemToAdd = {
-      id: product.id,
+      id: product._id, // Use _id as the id
       name: product.name,
       price: product.price,
       image: product.image,
-      // Add any other necessary details here
     };
-    addToCart(itemToAdd); // Pass the item details to the addToCart function
-    setShowNotification(true); // Show the notification
-    setTimeout(() => setShowNotification(false), 2000); // Hide the notification after 2 seconds
+    addToCart(itemToAdd);
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 2000);
   };
+
+  console.log('Products state:', products); // Log the products state to check its structure
 
   return (
     <MenuContainer>
       <div className="container">
         {showNotification && <Notification>Item added to cart</Notification>}
         <ProductGrid>
-          {products.map(product => (
-            <ProductCard key={product.id}>
-              {/* Corrected Image Path */}
-              <ProductImage src={baconCheeseImage} alt={product.name} />
+          {Array.isArray(products) && products.map(product => (
+            <ProductCard key={product._id}>
+              <ProductImage src={product.image} alt={product.name} />
 
               <CardBody>
                 <ProductTitle>{product.name}</ProductTitle>
@@ -114,7 +138,7 @@ const Menu = () => {
               </CardBody>
 
               <CardFooter>
-                <ProductPrice>₱{product.price.toFixed(2)}</ProductPrice> {/* Format Price */}
+                <ProductPrice>₱{product.price.toFixed(2)}</ProductPrice>
                 <AddToCartButton onClick={() => handleAddToCart(product)}>
                   Add to Cart
                 </AddToCartButton>

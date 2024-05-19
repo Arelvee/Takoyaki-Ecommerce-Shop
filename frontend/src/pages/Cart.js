@@ -38,7 +38,7 @@ const ProceedButton = styled.button`
   margin-top: 30px;
   padding: 15px 40px;
   font-size: 1.2rem;
-  background-color: #048820;
+  background-color: #013590;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -46,9 +46,10 @@ const ProceedButton = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #036b1a;
+    background-color: #012090DC;
   }
 `;
+
 
 const Cart = () => {
   const { cartItems, addToCart, decreaseQuantity, removeFromCart } = useContext(CartContext);
@@ -83,7 +84,7 @@ const Cart = () => {
             <CartItemsContainer>
               {cartItems.map(cartItem => {
                 // Find the corresponding product from the products array
-                const product = products.find(product => product.id === cartItem.id);
+                const product = products.find(product => product._id === cartItem.id); // Change 'id' to '_id'
                 return (
                   <CartItem
                     key={cartItem.id}
