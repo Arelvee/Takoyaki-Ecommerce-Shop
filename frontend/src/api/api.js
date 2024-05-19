@@ -1,12 +1,11 @@
 // frontend/src/api/api.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3001/api'; // Adjust the URL as needed
+const API_URL = '/api';
 
-export const fetchProduct = () => {
+export const fetchProducts = () => {
     return axios.get(`${API_URL}/products`);
 };
-
 export const fetchProductById = (id) => {
     return axios.get(`${API_URL}/products/${id}`);
 };

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import CartItem from '../components/CartItem';
 import styled from 'styled-components';
 import { CartContext } from '../context/CartContext';
-import { fetchProducts } from '../api'; // Import the fetchProducts function
+import { fetchProducts } from '../api/api'; // Import the fetchProducts function
 import { useNavigate } from 'react-router-dom';
 
 const CartContainer = styled.div`

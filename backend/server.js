@@ -1,31 +1,27 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const app = express()
+// backend/server.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const productRoutes = require('./src/router/Product');
 
+const app = express();
+const PORT = 3001; // Assuming your backend server runs on port 3001
 
-// Middleware
-app.use(express.json())
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(cors());
+app.use(bodyParser.json());
 
-// Routes
-app.use("/api/products", require("./src/router/Product"));
-
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send("Something went wrong!");
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/your_database_name', { useNewUrlParser: true, useUnifiedTopology: true });
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log('MongoDB database connection established successfully');
 });
 
+// Define routes
+app.use('/api/products', productRoutes);
 
-// Database
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {
-        app.listen(process.env.PORT, () => {
-            console.log(`Listening on port ${process.env.PORT} and connected to MongoDB`);
-        })
-    })
-    .catch((error) => {
-        console.error("Error connecting to MongoDB: ", error.message);
-    });
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
