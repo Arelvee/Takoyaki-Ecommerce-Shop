@@ -1,18 +1,12 @@
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useContext, useEffect, useState } from 'react';
 import CartItem from '../components/CartItem';
 import styled from 'styled-components';
 import { CartContext } from '../context/CartContext';
-import { products } from '../data/products'; // Import your product data
-import backgroundImage from '../data/images/menubg.png'; // Import the background image
+import { fetchProducts } from '../api'; // Import the fetchProducts function
+import { useNavigate } from 'react-router-dom';
 
 const CartContainer = styled.div`
   padding: 40px 0;
-  background-image: url(${backgroundImage}); /* Background image */
-  background-size: cover; /* Cover the entire section */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  text-align: center; // Optional
 `;
 
 const CartHeading = styled.h2`
@@ -58,14 +52,24 @@ const ProceedButton = styled.button`
 
 const Cart = () => {
   const { cartItems, addToCart, decreaseQuantity, removeFromCart } = useContext(CartContext);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const response = await fetchProducts();
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    getProducts();
+  }, []);
 
   const calculateTotalBill = () => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
-  };
-
-  const handleProceedToCheckout = () => {
-    navigate('/payment'); // Navigate to the payment route
   };
 
   return (
@@ -84,7 +88,7 @@ const Cart = () => {
                   <CartItem
                     key={cartItem.id}
                     item={cartItem}
-                    image={product.image} // Pass the image source to CartItem
+                    image={product?.image} // Pass the image source to CartItem
                     onIncreaseQuantity={() => addToCart(cartItem)}
                     onDecreaseQuantity={() => decreaseQuantity(cartItem.id)}
                     onRemoveItem={() => removeFromCart(cartItem.id)}
@@ -96,7 +100,7 @@ const Cart = () => {
               Total: ₱{calculateTotalBill()} {/* Change currency symbol here */}
             </TotalContainer>
             <div className="text-center">
-              <ProceedButton onClick={handleProceedToCheckout}>Proceed to Checkout</ProceedButton>
+              <ProceedButton onClick={() => navigate('/payment')}>Proceed to Checkout</ProceedButton>
             </div>
           </>
         )}
