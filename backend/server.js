@@ -10,9 +10,10 @@ const PORT = 3001; // Assuming your backend server runs on port 3001
 
 app.use(cors());
 app.use(bodyParser.json());
-
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/your_database_name', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://arelvisaya:JesusisLord07@takoyamie.gcgwwsk.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('MongoDB database connection established successfully');
